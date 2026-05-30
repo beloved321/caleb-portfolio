@@ -1,0 +1,780 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cinikihub — Caleb Innocent</title>
+  <meta name="description" content="An AfCFTA Export Compliance Platform. Case study by Caleb Innocent." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --text-primary: #0a0a0a;
+      --text-secondary: #555;
+      --text-tertiary: #999;
+      --border: #e5e5e5;
+      --bg: #ffffff;
+      --bg-secondary: #f7f7f5;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --text-primary: #f0f0f0;
+        --text-secondary: #aaa;
+        --text-tertiary: #666;
+        --border: #2a2a2a;
+        --bg: #0a0a0a;
+        --bg-secondary: #141414;
+      }
+    }
+
+    body {
+      font-family: 'Geist', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.7;
+    }
+
+    /* ── TOP NAV ── */
+    .topnav {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 24px;
+    }
+
+    .topnav a {
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      border-bottom: 0.5px solid #ccc;
+      padding-bottom: 2px;
+      transition: color 0.15s;
+    }
+
+    .topnav a:hover { color: var(--text-primary); }
+
+    /* ── PAGE WRAPPER ── */
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    /* ── LEFT TOC ── */
+    .toc {
+      position: sticky;
+      top: 40px;
+    }
+
+    .toc-label {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 14px;
+    }
+
+    .toc ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .toc ul li a {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-tertiary);
+      text-decoration: none;
+      padding: 4px 0 4px 10px;
+      border-left: 2px solid transparent;
+      display: block;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .toc ul li a:hover,
+    .toc ul li a.active {
+      color: var(--text-primary);
+      border-left-color: var(--text-primary);
+    }
+
+    /* ── MAIN CONTENT ── */
+    .content {
+      min-width: 0;
+    }
+
+    /* Header */
+    .cs-header {
+      padding-bottom: 2.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .cs-date-tags {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .cs-date {
+      font-size: 13px;
+      color: var(--text-tertiary);
+      font-weight: 300;
+    }
+
+    .cs-tag {
+      font-size: 11px;
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+      border: 0.5px solid var(--border);
+      border-radius: 20px;
+      padding: 3px 10px;
+    }
+
+    .cs-title {
+      font-size: 28px;
+      font-weight: 500;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+
+    .cs-subtitle {
+      font-size: 16px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+
+    /* Meta table */
+    .meta-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+    }
+
+    .meta-table td {
+      font-size: 13px;
+      padding: 10px 16px 10px 0;
+      border-bottom: 0.5px solid var(--border);
+      vertical-align: top;
+    }
+
+    .meta-table td:first-child {
+      font-weight: 500;
+      color: var(--text-tertiary);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      width: 110px;
+      white-space: nowrap;
+    }
+
+    .meta-table td:last-child {
+      font-weight: 300;
+      color: var(--text-secondary);
+    }
+
+    /* Hero media */
+    .cs-hero-media {
+      margin-bottom: 2.5rem;
+    }
+
+    .video-wrapper {
+      width: 100%;
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--bg-secondary);
+      border: 0.5px solid var(--border);
+    }
+
+    .video-wrapper video {
+      width: 100%;
+      display: block;
+    }
+
+    .video-placeholder {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: var(--bg-secondary);
+      border-radius: 10px;
+      border: 0.5px dashed var(--border);
+      color: var(--text-tertiary);
+      font-size: 13px;
+      font-weight: 300;
+    }
+
+    .video-placeholder svg {
+      opacity: 0.3;
+    }
+
+    /* Sections */
+    .cs-section {
+      margin-bottom: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .cs-section:last-child {
+      border-bottom: none;
+    }
+
+    .cs-section h2 {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 1.25rem;
+      letter-spacing: -0.01em;
+      scroll-margin-top: 40px;
+    }
+
+    .cs-section h3 {
+      font-size: 14px;
+      font-weight: 500;
+      margin: 1.5rem 0 0.6rem;
+      color: var(--text-primary);
+    }
+
+    .cs-section p {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .cs-section p:last-child { margin-bottom: 0; }
+
+    /* Blockquote */
+    blockquote {
+      border-left: 3px solid var(--border);
+      padding: 0.75rem 0 0.75rem 1.25rem;
+      margin: 1.5rem 0;
+    }
+
+    blockquote p {
+      font-size: 15px;
+      font-style: italic;
+      color: var(--text-secondary);
+    }
+
+    /* Numbered decisions list */
+    .decisions-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    .decisions-list li {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .decision-num {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      background: var(--bg-secondary);
+      border: 0.5px solid var(--border);
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+
+    .decision-body strong {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-primary);
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .decision-body p {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    /* Process steps */
+    .process-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .process-step {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .step-num {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      background: var(--bg-secondary);
+      border: 0.5px solid var(--border);
+      border-radius: 6px;
+      padding: 3px 8px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .step-body strong {
+      font-size: 14px;
+      font-weight: 500;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .step-body p {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    /* Screen gallery */
+    .screen-group {
+      margin-bottom: 2rem;
+    }
+
+    .screen-group h3 {
+      font-size: 13px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-tertiary);
+      margin-bottom: 12px;
+    }
+
+    .screen-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .screen-grid.single {
+      flex-direction: column;
+    }
+
+    .screen-img {
+      width: 100%;
+      border-radius: 10px;
+      border: 0.5px solid var(--border);
+      background: var(--bg-secondary);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .screen-img img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: contain;
+    }
+
+    .screen-img.placeholder-img {
+      color: var(--text-tertiary);
+      font-size: 12px;
+      font-weight: 300;
+      flex-direction: column;
+      gap: 6px;
+      border: 0.5px dashed var(--border);
+      aspect-ratio: 16 / 9;
+    }
+
+    /* Outcomes list */
+    .outcomes-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 0.5rem;
+    }
+
+    .outcomes-list li {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .outcomes-list li::before {
+      content: "→";
+      color: var(--text-tertiary);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* FOOTER */
+    .cs-footer {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 24px 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      border-top: 0.5px solid var(--border);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .footer-links a:hover { color: var(--text-primary); }
+
+    .footer-copy {
+      font-size: 12px;
+      color: var(--text-tertiary);
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .page {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+
+      .toc {
+        position: static;
+        border-bottom: 0.5px solid var(--border);
+        padding-bottom: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .toc ul {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .toc ul li a {
+        border-left: none;
+        border: 0.5px solid var(--border);
+        border-radius: 20px;
+        padding: 4px 12px;
+        font-size: 12px;
+      }
+
+      .screen-grid { grid-template-columns: 1fr; }
+
+      .cs-title { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP NAV -->
+  <nav class="topnav">
+    <a href="../index.html">← Back to home</a>
+  </nav>
+
+  <!-- PAGE LAYOUT -->
+  <div class="page">
+
+    <!-- LEFT TABLE OF CONTENTS -->
+    <aside class="toc">
+      <ul>
+        <li><a href="#objective">Project Objective</a></li>
+        <li><a href="#problem">Problem Statement</a></li>
+        <li><a href="#decisions">Key Design Decisions</a></li>
+        <li><a href="#process">Design Process</a></li>
+        <li><a href="#screens">Design Screens</a></li>
+        <li><a href="#outcomes">Outcomes & Impact</a></li>
+      </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="content">
+
+      <!-- HEADER -->
+      <header class="cs-header">
+        <h1 class="cs-title">Cinikihub: An AfCFTA Export Compliance Platform</h1>
+        <p class="cs-subtitle">Making Africa's largest free trade agreement usable for the people it was built for.</p>
+        <div class="cs-date-tags">
+          <span class="cs-date">May 12, 2026</span>
+          <span class="cs-tag">UX Design</span>
+          <span class="cs-tag">Product Design</span>
+          <span class="cs-tag">AfCFTA</span>
+        </div>
+
+        <table class="meta-table">
+          <tr>
+            <td>Role</td>
+            <td>Product Designer</td>
+          </tr>
+          <tr>
+            <td>Scope</td>
+            <td>UX/UI · Conversational Flow · Compliance Design</td>
+          </tr>
+          <tr>
+            <td>Sector</td>
+            <td>AgriTech · Trade · Africa</td>
+          </tr>
+        </table>
+      </header>
+
+      <!-- HERO VIDEO -->
+      <div class="cs-hero-media">
+        <div class="video-wrapper">
+          <video controls muted loop playsinline>
+            <source src="../assets/videos/cinikihub-hero.mp4" type="video/mp4" />
+          </video>
+        </div>
+      </div>
+
+      <!-- PROJECT OBJECTIVE -->
+      <section class="cs-section" id="objective">
+        <h2>Project Objective</h2>
+        <p>CinikiHub is an export compliance platform built for African farmers, cooperatives, and SMEs who want to trade across the continent without needing a lawyer to explain what that means.</p>
+        <p>AfCFTA created the legal framework for a single African market. CinikiHub makes that framework usable. Starting with Ghana's agricultural sector as the pilot, the platform gives traders a clear, step-by-step path through everything they need to export — from checking eligibility to booking a carrier.</p>
+      </section>
+
+      <!-- PROBLEM STATEMENT -->
+      <section class="cs-section" id="problem">
+        <h2>Problem Statement</h2>
+        <p>AfCFTA is, on paper, the world's largest free trade area by number of countries. In practice, most of the people it was built to benefit have no idea how to use it.</p>
+        <p>The barrier is not tariffs. It is information.</p>
+        <p>A farmer in a remote area in Ghana may not know if his goods qualify for zero-tariff trade. He may not know what a Certificate of Origin is, who issues it, or why it matters when his shipment reaches the Nigerian border. Procedures are split across multiple regulators. Requirements change by product and destination. The language is written for policy experts, not traders. And nothing connects compliance to logistics in one place.</p>
+        <p>The result: AfCFTA's promise stays unrealised at the level of the individual business. Not because the opportunity is not there. Because the path to it is invisible.</p>
+        <blockquote>
+          <p>How do you turn a continental trade agreement into something a smallholder farmer can act on from a phone?</p>
+        </blockquote>
+      </section>
+
+      <!-- KEY DESIGN DECISIONS -->
+      <section class="cs-section" id="decisions">
+        <h2>Key Design Decisions</h2>
+        <ul class="decisions-list">
+          <li>
+            <div class="decision-num">1</div>
+            <div class="decision-body">
+              <strong>The eligibility check is a conversation, not a form</strong>
+              <p>This is the most important screen in the product — the moment AfCFTA stops being a policy and starts being relevant to a specific person's business. Rather than a scrollable form, the check reveals one question at a time. Each answer unlocks the next.</p>
+            </div>
+          </li>
+          <li>
+            <div class="decision-num">2</div>
+            <div class="decision-body">
+              <strong>The dashboard is not where new users land</strong>
+              <p>Dropping a first-time user onto a dashboard with no context is a fast way to lose them. CinikiHub sends new users directly to the action they said they need. The dashboard becomes somewhere they return to, not a starting point they have to navigate from cold.</p>
+            </div>
+          </li>
+          <li>
+            <div class="decision-num">3</div>
+            <div class="decision-body">
+              <strong>Business registration is optional</strong>
+              <p>A large share of the platform's users are informal traders who do not have formal business registration. Requiring a registration number at onboarding would have excluded them entirely. The platform flags what they would need to formalise, but it never locks them out for not having it yet.</p>
+            </div>
+          </li>
+          <li>
+            <div class="decision-num">4</div>
+            <div class="decision-body">
+              <strong>The compliance snapshot before any action</strong>
+              <p>Before a user does anything inside the app, the platform shows them their compliance picture based on onboarding data. It is the first proof that CinikiHub works for them.</p>
+            </div>
+          </li>
+          <li>
+            <div class="decision-num">5</div>
+            <div class="decision-body">
+              <strong>"Needs attention" not "Failed"</strong>
+              <p>A product flagged in the eligibility dashboard is labelled "Needs attention," not "Failed" or "Ineligible." A missing Certificate of Origin is fixable. Calling it a failure closes a door that should stay open.</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <!-- DESIGN PROCESS -->
+      <section class="cs-section" id="process">
+        <h2>Design Process</h2>
+        <div class="process-steps">
+          <div class="process-step">
+            <span class="step-num">01</span>
+            <div class="step-body">
+              <strong>Context Immersion</strong>
+              <p>Before any screen, I got into the policy. Understanding Rules of Origin and Article 30 Direct Transport requirements was not optional — the design had to be compliance accurate, not just visually clear.</p>
+            </div>
+          </div>
+          <div class="process-step">
+            <span class="step-num">02</span>
+            <div class="step-body">
+              <strong>User Definition</strong>
+              <p>Two very different users. The Trader (farmer, SME, cooperative) needs plain language and a fast path to answers. The Competent Authority (customs body, chamber of commerce) needs structured verification tools and official response workflows. One platform, two distinct experiences, built on the same architecture.</p>
+            </div>
+          </div>
+          <div class="process-step">
+            <span class="step-num">03</span>
+            <div class="step-body">
+              <strong>Flow Mapping</strong>
+              <p>I mapped the full journey before touching Figma. Splash screen through onboarding, eligibility check, certificate of origin, export guide, logistics, authority portal. This exposed the routing decisions early — especially the gap between what the product does and what a new user thinks it does on day one.</p>
+            </div>
+          </div>
+          <div class="process-step">
+            <span class="step-num">04</span>
+            <div class="step-body">
+              <strong>Micro-copy</strong>
+              <p>Every line of in-product copy was rewritten to remove jargon. "Were the seeds grown in Ghana?" not "Rules of Origin - Section A." This required going back and forth with the product and policy leads to land language that was accurate and human at the same time.</p>
+            </div>
+          </div>
+          <div class="process-step">
+            <span class="step-num">05</span>
+            <div class="step-body">
+              <strong>Prototype & Walkthrough</strong>
+              <p>The final deliverable was a complete Figma prototype covering the full trader journey — onboarding through logistics rates.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DESIGN SCREENS -->
+      <section class="cs-section" id="screens">
+        <h2>Design Screens & Walkthrough</h2>
+        <div class="screen-group">
+          <h3>01 — Onboarding</h3>
+          <div class="screen-grid">
+            <div class="screen-img">
+              <img src="../assets/images/cinikihub/onboard-1.png" alt="Cinikihub Onboarding Screen 1"
+                onerror="this.parentElement.classList.add('placeholder-img'); this.style.display='none'; this.parentElement.innerHTML='<span>Onboard 1.png</span>'" />
+            </div>
+            <div class="screen-img">
+              <img src="../assets/images/cinikihub/onboard-2.png" alt="Cinikihub Onboarding Screen 2"
+                onerror="this.parentElement.classList.add('placeholder-img'); this.style.display='none'; this.parentElement.innerHTML='<span>Onboard 2.png</span>'" />
+            </div>
+          </div>
+        </div>
+
+        <div class="screen-group">
+          <h3>02 — Eligibility Check</h3>
+          <div class="screen-grid">
+            <div class="screen-img">
+              <img src="../assets/images/cinikihub/eligible-1.png" alt="Eligibility Check Screen 1"
+                onerror="this.parentElement.classList.add('placeholder-img'); this.style.display='none'; this.parentElement.innerHTML='<span>eligible 1.png</span>'" />
+            </div>
+            <div class="screen-img">
+              <img src="../assets/images/cinikihub/eligible-2.png" alt="Eligibility Check Screen 2"
+                onerror="this.parentElement.classList.add('placeholder-img'); this.style.display='none'; this.parentElement.innerHTML='<span>eligible 2.png</span>'" />
+            </div>
+          </div>
+        </div>
+
+        <div class="screen-group">
+          <h3>03 — Certificate of Origin</h3>
+          <div class="screen-grid">
+            <div class="screen-img">
+              <img src="../assets/images/cinikihub/coo-1.png" alt="Certificate of Origin Screen 1"
+                onerror="this.parentElement.classList.add('placeholder-img'); this.style.display='none'; this.parentElement.innerHTML='<span>CoO 1.png</span>'" />
+            </div>
+            <div class="screen-img">
+              <img src="../assets/images/cinikihub/coo-2.png" alt="Certificate of Origin Screen 2"
+                onerror="this.parentElement.classList.add('placeholder-img'); this.style.display='none'; this.parentElement.innerHTML='<span>CoO 2.png</span>'" />
+            </div>
+          </div>
+        </div>
+
+        <div class="screen-group">
+          <h3>04 — Export Guide</h3>
+          <div class="screen-grid single">
+            <div class="screen-img">
+              <img src="../assets/images/cinikihub/egs.png" alt="Export Guide Screen"
+                onerror="this.parentElement.classList.add('placeholder-img'); this.style.display='none'; this.parentElement.innerHTML='<span>EGS.png</span>'" />
+            </div>
+          </div>
+        </div>
+
+        <div class="screen-group">
+          <h3>05 — Logistics Rates</h3>
+          <div class="screen-grid single">
+            <div class="screen-img">
+              <img src="../assets/images/cinikihub/ls.png" alt="Logistics Rates Screen"
+                onerror="this.parentElement.classList.add('placeholder-img'); this.style.display='none'; this.parentElement.innerHTML='<span>lS.png</span>'" />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- OUTCOMES -->
+      <section class="cs-section" id="outcomes">
+        <h2>Outcomes & Impact</h2>
+        <ul class="outcomes-list">
+          <li>Delivered a complete end-to-end design covering two distinct user types within a single scalable product architecture.</li>
+          <li>Made AfCFTA participation accessible to informal traders without formal registration.</li>
+          <li>Replaced a complex multi-field compliance assessment with a guided conversational flow that removed the biggest drop-off point in the product.</li>
+          <li>Built a design foundation ready to scale beyond Ghana's agricultural sector to other member states, product categories, and user types.</li>
+        </ul>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="cs-footer">
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/calebinnocent/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://layers.to/beloved" target="_blank" rel="noopener">Designs</a>
+      <a href="https://docs.google.com/document/d/19_4POuirY4o4PuWvOMI_A__f0wBFO7W9kv2Tc1C96do/edit?usp=sharing" target="_blank" rel="noopener">Résumé</a>
+    </div>
+    <span class="footer-copy">© 2026 Caleb Innocent</span>
+  </footer>
+
+  <!-- TOC ACTIVE HIGHLIGHT SCRIPT -->
+  <script>
+    const sections = document.querySelectorAll('.cs-section');
+    const tocLinks = document.querySelectorAll('.toc ul li a');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(link => link.classList.remove('active'));
+          const active = document.querySelector(`.toc a[href="#${entry.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+
+    sections.forEach(s => observer.observe(s));
+  </script>
+
+</body>
+</html>

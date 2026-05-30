@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YumYum Food Delivery Bot — Caleb Innocent</title>
+  <meta name="description" content="Order food from local restaurants directly via WhatsApp. Case study by Caleb Innocent." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --text-primary: #0a0a0a;
+      --text-secondary: #555;
+      --text-tertiary: #999;
+      --border: #e5e5e5;
+      --bg: #ffffff;
+      --bg-secondary: #f7f7f5;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --text-primary: #f0f0f0;
+        --text-secondary: #aaa;
+        --text-tertiary: #666;
+        --border: #2a2a2a;
+        --bg: #0a0a0a;
+        --bg-secondary: #141414;
+      }
+    }
+
+    body {
+      font-family: 'Geist', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.7;
+    }
+
+    /* ── TOP NAV ── */
+    .topnav {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 24px;
+    }
+
+    .topnav a {
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      border-bottom: 0.5px solid #ccc;
+      padding-bottom: 2px;
+      transition: color 0.15s;
+    }
+
+    .topnav a:hover { color: var(--text-primary); }
+
+    /* ── PAGE WRAPPER ── */
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    /* ── LEFT TOC ── */
+    .toc {
+      position: sticky;
+      top: 40px;
+    }
+
+    .toc ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .toc ul li a {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-tertiary);
+      text-decoration: none;
+      padding: 4px 0 4px 10px;
+      border-left: 2px solid transparent;
+      display: block;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .toc ul li a:hover,
+    .toc ul li a.active {
+      color: var(--text-primary);
+      border-left-color: var(--text-primary);
+    }
+
+    /* ── MAIN CONTENT ── */
+    .content { min-width: 0; }
+
+    /* Header */
+    .cs-header {
+      padding-bottom: 2.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .cs-title {
+      font-size: 28px;
+      font-weight: 500;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+
+    .cs-date-tags {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .cs-date {
+      font-size: 13px;
+      color: var(--text-tertiary);
+      font-weight: 300;
+    }
+
+    .cs-tag {
+      font-size: 11px;
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+      border: 0.5px solid var(--border);
+      border-radius: 20px;
+      padding: 3px 10px;
+    }
+
+    .cs-subtitle {
+      font-size: 16px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+
+    /* Meta table */
+    .meta-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+    }
+
+    .meta-table td {
+      font-size: 13px;
+      padding: 10px 16px 10px 0;
+      border-bottom: 0.5px solid var(--border);
+      vertical-align: top;
+    }
+
+    .meta-table td:first-child {
+      font-weight: 500;
+      color: var(--text-tertiary);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      width: 110px;
+      white-space: nowrap;
+    }
+
+    .meta-table td:last-child {
+      font-weight: 300;
+      color: var(--text-secondary);
+    }
+
+    /* Sections */
+    .cs-section {
+      margin-bottom: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .cs-section:last-child { border-bottom: none; }
+
+    .cs-section h2 {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 1.25rem;
+      letter-spacing: -0.01em;
+      scroll-margin-top: 40px;
+    }
+
+    .cs-section h3 {
+      font-size: 14px;
+      font-weight: 500;
+      margin: 1.75rem 0 0.6rem;
+      color: var(--text-primary);
+    }
+
+    .cs-section h4 {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin: 1.25rem 0 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .cs-section p {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .cs-section p:last-child { margin-bottom: 0; }
+
+    /* Numbered list */
+    .numbered-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    .numbered-list li {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .num-badge {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      background: var(--bg-secondary);
+      border: 0.5px solid var(--border);
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+
+    .num-body {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      padding-top: 2px;
+    }
+
+    .num-body strong {
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    /* Bullet list */
+    .bullet-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 0.5rem;
+    }
+
+    .bullet-list li {
+      display: flex;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .bullet-list li::before {
+      content: "→";
+      color: var(--text-tertiary);
+      flex-shrink: 0;
+    }
+
+    /* Process steps */
+    .process-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin-top: 1rem;
+    }
+
+    .process-step { display: flex; gap: 16px; align-items: flex-start; }
+
+    .step-num {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      background: var(--bg-secondary);
+      border: 0.5px solid var(--border);
+      border-radius: 6px;
+      padding: 3px 8px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .step-body strong {
+      font-size: 14px;
+      font-weight: 500;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .step-body p {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      margin: 0 0 6px;
+      line-height: 1.7;
+    }
+
+    /* Screen groups */
+    .screen-group { margin-bottom: 2.5rem; }
+
+    .screen-group:last-child { margin-bottom: 0; }
+
+    .screen-group-label {
+      font-size: 13px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-tertiary);
+      margin-bottom: 12px;
+    }
+
+    .screen-img {
+      width: 100%;
+      border-radius: 10px;
+      border: 0.5px solid var(--border);
+      background: var(--bg-secondary);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    .screen-img img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: contain;
+    }
+
+    .screen-img.placeholder-img {
+      aspect-ratio: 16 / 9;
+      flex-direction: column;
+      gap: 8px;
+      border: 0.5px dashed var(--border);
+      color: var(--text-tertiary);
+      font-size: 12px;
+      font-weight: 300;
+    }
+
+    /* Outcomes list */
+    .outcomes-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 0.5rem;
+    }
+
+    .outcomes-list li {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .outcomes-list li::before {
+      content: "→";
+      color: var(--text-tertiary);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* blockquote */
+    blockquote {
+      border-left: 3px solid var(--border);
+      padding: 0.75rem 0 0.75rem 1.25rem;
+      margin: 1.5rem 0;
+    }
+
+    blockquote p {
+      font-size: 15px;
+      font-style: italic;
+      color: var(--text-secondary);
+    }
+
+    /* FOOTER */
+    .cs-footer {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 24px 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      border-top: 0.5px solid var(--border);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .footer-links a:hover { color: var(--text-primary); }
+
+    .footer-copy { font-size: 12px; color: var(--text-tertiary); }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .page {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+
+      .toc {
+        position: static;
+        border-bottom: 0.5px solid var(--border);
+        padding-bottom: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .toc ul {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .toc ul li a {
+        border-left: none;
+        border: 0.5px solid var(--border);
+        border-radius: 20px;
+        padding: 4px 12px;
+        font-size: 12px;
+      }
+
+      .cs-title { font-size: 22px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP NAV -->
+  <nav class="topnav">
+    <a href="../index.html">← Back to home</a>
+  </nav>
+
+  <!-- PAGE LAYOUT -->
+  <div class="page">
+
+    <!-- LEFT TABLE OF CONTENTS -->
+    <aside class="toc">
+      <ul>
+        <li><a href="#objective">Project Objective</a></li>
+        <li><a href="#problem">Problem Statement</a></li>
+        <li><a href="#features">Key Features</a></li>
+        <li><a href="#process">Design Process</a></li>
+        <li><a href="#designs">High-Fidelity Designs</a></li>
+        <li><a href="#results">Key Results</a></li>
+        <li><a href="#conclusion">Conclusion</a></li>
+      </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="content">
+
+      <!-- HEADER -->
+      <header class="cs-header">
+        <h1 class="cs-title">YumYum Food Delivery Bot</h1>
+        <p class="cs-subtitle">Order food from local restaurants directly via WhatsApp, no app download required.</p>
+        <div class="cs-date-tags">
+          <span class="cs-tag">UX Design</span>
+          <span class="cs-tag">Product Design</span>
+          <span class="cs-tag">WhatsApp Bot</span>
+          <span class="cs-tag">Web App</span>
+        </div>
+
+        <table class="meta-table">
+          <tr>
+            <td>Role</td>
+            <td>Product Designer</td>
+          </tr>
+          <tr>
+            <td>Scope</td>
+            <td>UX/UI · Conversational Design · Dashboard Design</td>
+          </tr>
+          <tr>
+            <td>Platform</td>
+            <td>Web Application · WhatsApp Bot</td>
+          </tr>
+        </table>
+      </header>
+
+      <!-- PROJECT OBJECTIVE -->
+      <section class="cs-section" id="objective">
+        <h2>Project Objective</h2>
+        <p>The YumYum project aims to design a user-friendly and efficient web application that allows users to order food from local restaurants directly via WhatsApp, eliminating the need for downloading additional apps.</p>
+        <p>This innovative approach focuses on enhancing the food delivery experience through ease of use, quick order placement, and reliable delivery tracking. The project also integrates restaurant-side management tools, enabling seamless order processing and customer communication.</p>
+      </section>
+
+      <!-- PROBLEM STATEMENT -->
+      <section class="cs-section" id="problem">
+        <h2>Problem Statement</h2>
+        <p>In an era where users are overwhelmed by the need to download multiple apps for food delivery, YumYum seeks to simplify this process by leveraging WhatsApp — a widely used messaging platform — to facilitate food ordering.</p>
+        <p>By offering a Virtual POS accessible via browsers and integrating WhatsApp bots for order placement, the platform removes the biggest barrier between a hungry user and their next meal.</p>
+
+        <h3>Project Objectives</h3>
+        <ul class="numbered-list">
+          <li>
+            <div class="num-badge">1</div>
+            <div class="num-body">Simplify the food ordering process using WhatsApp as the primary interface.</div>
+          </li>
+          <li>
+            <div class="num-badge">2</div>
+            <div class="num-body">Provide real-time order tracking and notifications.</div>
+          </li>
+          <li>
+            <div class="num-badge">3</div>
+            <div class="num-body">Equip restaurants with tools for menu management, inventory tracking, and order processing.</div>
+          </li>
+          <li>
+            <div class="num-badge">4</div>
+            <div class="num-body">Enhance customer satisfaction through personalized experiences and feedback integration.</div>
+          </li>
+        </ul>
+      </section>
+
+      <!-- KEY FEATURES -->
+      <section class="cs-section" id="features">
+        <h2>Key Features</h2>
+        <ul class="bullet-list">
+          <li><strong>WhatsApp Integration</strong> — Order food directly through WhatsApp without downloading additional apps.</li>
+          <li><strong>Virtual POS</strong> — Browser-accessible point-of-sale system for restaurants to manage orders in real time.</li>
+          <li><strong>Real-time Tracking</strong> — Live order status updates and delivery notifications.</li>
+          <li><strong>Restaurant Dashboard</strong> — Modular tools for menu management, inventory tracking, and order processing.</li>
+          <li><strong>Personalization</strong> — Order customization and feedback integration for a tailored experience.</li>
+        </ul>
+      </section>
+
+      <!-- DESIGN PROCESS -->
+      <section class="cs-section" id="process">
+        <h2>Design Process</h2>
+
+        <div class="process-steps">
+          <div class="process-step">
+            <span class="step-num">01</span>
+            <div class="step-body">
+              <strong>Research & Discovery</strong>
+              <p><em>Target Audience:</em> Busy professionals, students, and families who frequently order food online.</p>
+              <p><em>Pain Points Identified:</em></p>
+              <ul class="bullet-list" style="margin-top: 4px;">
+                <li>Frustration with app downloads.</li>
+                <li>Lack of real-time order updates in existing systems.</li>
+                <li>Difficulty in customizing orders.</li>
+              </ul>
+
+              <h4 style="margin-top: 1.25rem;">User Persona</h4>
+              <p>Using research data, I developed a fictional user persona grounded in the target audience's needs, behaviours, and frustrations.</p>
+              <div class="screen-img">
+                <img src="../assets/images/yumyum/user-persona.png" alt="YumYum User Persona"
+                  onerror="this.parentElement.classList.add('placeholder-img'); this.style.display='none'; this.parentElement.innerHTML='<span>user-persona.png</span>'" />
+              </div>
+            </div>
+          </div>
+
+          <div class="process-step">
+            <span class="step-num">02</span>
+            <div class="step-body">
+              <strong>Ideation & Process Flow</strong>
+
+              <h4>Key Design Decisions</h4>
+              <ul class="numbered-list" style="margin-top: 0.5rem;">
+                <li>
+                  <div class="num-badge">1</div>
+                  <div class="num-body">Simplified navigation with a focus on guest checkout.</div>
+                </li>
+                <li>
+                  <div class="num-badge">2</div>
+                  <div class="num-body">Integration of WhatsApp as a primary ordering platform to reduce friction.</div>
+                </li>
+                <li>
+                  <div class="num-badge">3</div>
+                  <div class="num-body">Modular dashboard design for restaurant-side management tools.</div>
+                </li>
+              </ul>
+
+              <h4>WhatsApp Bot Flow</h4>
+              <div class="screen-img">
+                <img src="../assets/images/yumyum/whatsapp-bot-flow.png" alt="WhatsApp Bot Flow"
+                  onerror="this.parentElement.classList.add('placeholder-img'); this.style.display='none'; this.parentElement.innerHTML='<span>whatsapp-bot-flow.png</span>'" />
+              </div>
+
+              <h4>Restaurant Process Flow</h4>
+              <div class="screen-img">
+                <img src="../assets/images/yumyum/restaurant-process-flow.png" alt="Restaurant Process Flow"
+                  onerror="this.parentElement.classList.add('placeholder-img'); this.style.display='none'; this.parentElement.innerHTML='<span>restaurant-process-flow.png</span>'" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- HIGH FIDELITY DESIGNS -->
+      <section class="cs-section" id="designs">
+        <h2>High-Fidelity Designs</h2>
+
+        <h3>User UI Screens</h3>
+
+        <div class="screen-group">
+          <p class="screen-group-label">Landing Page</p>
+          <div class="screen-img">
+            <img src="../assets/images/yumyum/landing-page.png" alt="YumYum Landing Page"
+              onerror="this.parentElement.classList.add('placeholder-img'); this.style.display='none'; this.parentElement.innerHTML='<span>landing-page.png</span>'" />
+          </div>
+        </div>
+
+        <div class="screen-group">
+          <p class="screen-group-label">Menu Browsing & Order Customization</p>
+          <div class="screen-img">
+            <img src="../assets/images/yumyum/menu-browsing.png" alt="Menu Browsing and Order Customization"
+              onerror="this.parentElement.classList.add('placeholder-img'); this.style.display='none'; this.parentElement.innerHTML='<span>menu-browsing.png</span>'" />
+          </div>
+        </div>
+
+        <div class="screen-group">
+          <p class="screen-group-label">Checkout & Order Tracking</p>
+          <div class="screen-img">
+            <img src="../assets/images/yumyum/checkout-tracking.png" alt="Checkout and Order Tracking"
+              onerror="this.parentElement.classList.add('placeholder-img'); this.style.display='none'; this.parentElement.innerHTML='<span>checkout-tracking.png</span>'" />
+          </div>
+        </div>
+
+        <h3>Restaurant UI Screens</h3>
+
+        <div class="screen-group">
+          <p class="screen-group-label">Registration & Menu Integration</p>
+          <div class="screen-img">
+            <img src="../assets/images/yumyum/restaurant-registration.png" alt="Restaurant Registration and Menu Integration"
+              onerror="this.parentElement.classList.add('placeholder-img'); this.style.display='none'; this.parentElement.innerHTML='<span>restaurant-registration.png</span>'" />
+          </div>
+        </div>
+
+        <div class="screen-group">
+          <p class="screen-group-label">Dashboard & Order Request</p>
+          <div class="screen-img">
+            <img src="../assets/images/yumyum/restaurant-dashboard.png" alt="Restaurant Dashboard and Order Request"
+              onerror="this.parentElement.classList.add('placeholder-img'); this.style.display='none'; this.parentElement.innerHTML='<span>restaurant-dashboard.png</span>'" />
+          </div>
+        </div>
+
+        <div class="screen-group">
+          <p class="screen-group-label">WhatsApp Screens</p>
+          <div class="screen-img">
+            <img src="../assets/images/yumyum/whatsapp-screens-restaurant.png" alt="Restaurant WhatsApp Screens"
+              onerror="this.parentElement.classList.add('placeholder-img'); this.style.display='none'; this.parentElement.innerHTML='<span>whatsapp-screens-restaurant.png</span>'" />
+          </div>
+        </div>
+      </section>
+
+      <!-- KEY RESULTS -->
+      <section class="cs-section" id="results">
+        <h2>Key Results</h2>
+        <ul class="outcomes-list">
+          <li>Streamlined ordering process reduced user drop-off rates compared to traditional app-based systems.</li>
+          <li>Positive customer feedback highlighted the convenience of using WhatsApp for food delivery.</li>
+        </ul>
+      </section>
+
+      <!-- CONCLUSION -->
+      <section class="cs-section" id="conclusion">
+        <h2>Conclusion</h2>
+        <blockquote>
+          <p>Getting good food should be simple.</p>
+        </blockquote>
+        <p>The YumYum project uses WhatsApp — a platform people already know and use daily — to make ordering food a lot easier. By meeting users where they already are, the platform removes the biggest friction point in food delivery: the app.</p>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="cs-footer">
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/calebinnocent/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://layers.to/beloved" target="_blank" rel="noopener">Designs</a>
+      <a href="https://docs.google.com/document/d/19_4POuirY4o4PuWvOMI_A__f0wBFO7W9kv2Tc1C96do/edit?usp=sharing" target="_blank" rel="noopener">Résumé</a>
+    </div>
+    <span class="footer-copy">© 2026 Caleb Innocent</span>
+  </footer>
+
+  <!-- TOC ACTIVE HIGHLIGHT -->
+  <script>
+    const sections = document.querySelectorAll('.cs-section');
+    const tocLinks = document.querySelectorAll('.toc ul li a');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(link => link.classList.remove('active'));
+          const active = document.querySelector(`.toc a[href="#${entry.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+
+    sections.forEach(s => observer.observe(s));
+  </script>
+
+</body>
+</html>

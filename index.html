@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Caleb Innocent — UI/UX Designer</title>
+  <meta name="description" content="UI/UX Designer with a background in sales and electrical engineering. Designing effective solutions at Penetraliahub Ltd." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --text-primary: #0a0a0a;
+      --text-secondary: #555;
+      --text-tertiary: #999;
+      --border: #e5e5e5;
+      --bg: #ffffff;
+      --bg-secondary: #f7f7f5;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --text-primary: #f0f0f0;
+        --text-secondary: #aaa;
+        --text-tertiary: #666;
+        --border: #2a2a2a;
+        --bg: #0a0a0a;
+        --bg-secondary: #141414;
+      }
+    }
+
+    body {
+      font-family: 'Geist', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    main {
+      max-width: 680px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 0 24px;
+      flex: 1;
+    }
+
+    /* HERO */
+    .hero {
+      padding: 5rem 0 3rem;
+    }
+
+    .hero-name {
+      font-size: 20px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      margin-bottom: 6px;
+    }
+
+    .hero-tagline {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+    }
+
+    .bio-role {
+      font-size: 16px;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .bio-text {
+      font-size: 16px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      max-width: 600px;
+      margin-bottom: 2rem;
+    }
+
+    /* HERO LINKS — pill buttons with arrow */
+    .hero-links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .hero-links a {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      text-decoration: none;
+      border: 0.5px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.15s, border-color 0.15s, background 0.15s;
+    }
+
+    .hero-links a:hover {
+      color: var(--text-primary);
+      border-color: var(--text-secondary);
+    }
+
+    .hero-links a .arrow {
+      font-size: 11px;
+      opacity: 0.5;
+      transition: opacity 0.15s;
+    }
+
+    .hero-links a:hover .arrow {
+      opacity: 1;
+    }
+
+    /* SECTIONS — no dividers between them */
+    .section-wrap {
+      padding: 2.5rem 0;
+    }
+
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-tertiary);
+      margin-bottom: 1rem;
+    }
+
+    /* CASE STUDY ITEMS — each in a bordered card */
+    .case-study-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+      padding: 14px;
+      border: 0.5px solid var(--border);
+      border-radius: 10px;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.15s, border-color 0.15s;
+      margin-bottom: 10px;
+    }
+
+    .case-study-item:last-child { margin-bottom: 0; }
+
+    .case-study-item:hover {
+      background: var(--bg-secondary);
+      border-color: var(--text-tertiary);
+    }
+
+    .case-study-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .case-study-thumb {
+      width: 72px;
+      height: 52px;
+      border-radius: 6px;
+      border: 0.5px solid var(--border);
+      flex-shrink: 0;
+      overflow: hidden;
+      background: var(--bg-secondary);
+    }
+
+    .case-study-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .case-study-title {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 3px;
+    }
+
+    .case-study-desc {
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--text-secondary);
+    }
+
+    .case-study-date {
+      font-size: 12px;
+      font-weight: 300;
+      color: var(--text-tertiary);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* PROJECTS PLACEHOLDER */
+    .placeholder-block {
+      margin-top: 0.5rem;
+      background: var(--bg-secondary);
+      border-radius: 8px;
+      padding: 1.5rem;
+      text-align: center;
+      color: var(--text-tertiary);
+      font-size: 12px;
+      border: 0.5px dashed var(--border);
+    }
+
+    /* FOOTER */
+    footer {
+      max-width: 680px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2rem 24px 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      border-top: 0.5px solid var(--border);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .footer-links a:hover { color: var(--text-primary); }
+
+    .footer-copy {
+      font-size: 12px;
+      color: var(--text-tertiary);
+    }
+
+    @media (max-width: 480px) {
+      .hero { padding: 3rem 0 2rem; }
+      .case-study-thumb { width: 52px; height: 38px; }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <main>
+    <section class="hero">
+      <h1 class="hero-name">Caleb Innocent</h1>
+      <p class="hero-tagline">Design is how it works.</p>
+      <p class="bio-role">Product Designer</p>
+      <p class="bio-text">I work part-time with Penetraliahub Ltd. With a background in sales and electrical engineering, I understand user needs and the technical constraints involved, this helps me build effective solutions.</p>
+      <div class="hero-links">
+        <a href="mailto:designwithcalebinnocent@gmail.com">Mail <span class="arrow">↗</span></a>
+        <a href="https://x.com/ayanfe_caleb" target="_blank" rel="noopener">Twitter <span class="arrow">↗</span></a>
+        <a href="https://layers.to/beloved" target="_blank" rel="noopener">My designs <span class="arrow">↗</span></a>
+      </div>
+    </section>
+
+    <section class="section-wrap">
+      <p class="section-label">Case Studies</p>
+
+      <a class="case-study-item" href="./cinikihub/">
+        <div class="case-study-left">
+          <div class="case-study-thumb">
+            <img src="./assets/images/Cinikihub.png" alt="Cinikihub thumbnail" />
+          </div>
+          <div>
+            <p class="case-study-title">Cinikihub</p>
+            <p class="case-study-desc">An AfCFTA Export Compliance Platform</p>
+          </div>
+        </div>
+        <span class="case-study-date">May 12, 2026</span>
+      </a>
+
+      <a class="case-study-item" href="./yumyum/">
+        <div class="case-study-left">
+          <div class="case-study-thumb">
+            <img src="./assets/images/YumYum.png" alt="YumYum thumbnail" />
+          </div>
+          <div>
+            <p class="case-study-title">YumYum Food Delivery Bot</p>
+            <p class="case-study-desc">Order food from local restaurants directly via WhatsApp</p>
+          </div>
+        </div>
+        <span class="case-study-date">—</span>
+      </a>
+
+      <a class="case-study-item" href="./club-medicare/">
+        <div class="case-study-left">
+          <div class="case-study-thumb">
+            <img src="./assets/images/Club-medicare.png" alt="Club Med-iCare thumbnail" />
+          </div>
+          <div>
+            <p class="case-study-title">Club Med-iCare</p>
+            <p class="case-study-desc">Social Engagement Club for Elderly in Nigeria</p>
+          </div>
+        </div>
+        <span class="case-study-date">—</span>
+      </a>
+    </section>
+
+    <section class="section-wrap">
+      <p class="section-label">Projects</p>
+      <div class="placeholder-block">--</div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/calebinnocent/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://layers.to/beloved" target="_blank" rel="noopener">Designs</a>
+      <a href="https://docs.google.com/document/d/19_4POuirY4o4PuWvOMI_A__f0wBFO7W9kv2Tc1C96do/edit?usp=sharing" target="_blank" rel="noopener">Résumé</a>
+    </div>
+    <span class="footer-copy">© 2026 Caleb Innocent</span>
+  </footer>
+
+</body>
+</html>

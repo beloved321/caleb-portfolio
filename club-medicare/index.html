@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Club Med-iCare — Caleb Innocent</title>
+  <meta name="description" content="Social Engagement Club for Elderly in Nigeria. Case study by Caleb Innocent." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --text-primary: #0a0a0a;
+      --text-secondary: #555;
+      --text-tertiary: #999;
+      --border: #e5e5e5;
+      --bg: #ffffff;
+      --bg-secondary: #f7f7f5;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --text-primary: #f0f0f0;
+        --text-secondary: #aaa;
+        --text-tertiary: #666;
+        --border: #2a2a2a;
+        --bg: #0a0a0a;
+        --bg-secondary: #141414;
+      }
+    }
+
+    body {
+      font-family: 'Geist', sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      line-height: 1.7;
+    }
+
+    /* ── TOP NAV ── */
+    .topnav {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 24px;
+    }
+
+    .topnav a {
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      border-bottom: 0.5px solid #ccc;
+      padding-bottom: 2px;
+      transition: color 0.15s;
+    }
+
+    .topnav a:hover { color: var(--text-primary); }
+
+    /* ── PAGE WRAPPER ── */
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px 80px;
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    /* ── LEFT TOC ── */
+    .toc {
+      position: sticky;
+      top: 40px;
+    }
+
+    .toc ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .toc ul li a {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-tertiary);
+      text-decoration: none;
+      padding: 4px 0 4px 10px;
+      border-left: 2px solid transparent;
+      display: block;
+      transition: color 0.15s, border-color 0.15s;
+    }
+
+    .toc ul li a:hover,
+    .toc ul li a.active {
+      color: var(--text-primary);
+      border-left-color: var(--text-primary);
+    }
+
+    /* ── MAIN CONTENT ── */
+    .content { min-width: 0; }
+
+    /* Header */
+    .cs-header {
+      padding-bottom: 2.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .cs-title {
+      font-size: 28px;
+      font-weight: 500;
+      line-height: 1.25;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+
+    .cs-date-tags {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .cs-tag {
+      font-size: 11px;
+      background: var(--bg-secondary);
+      color: var(--text-secondary);
+      border: 0.5px solid var(--border);
+      border-radius: 20px;
+      padding: 3px 10px;
+    }
+
+    .cs-subtitle {
+      font-size: 16px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+    }
+
+    /* Meta table */
+    .meta-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .meta-table td {
+      font-size: 13px;
+      padding: 10px 16px 10px 0;
+      border-bottom: 0.5px solid var(--border);
+      vertical-align: top;
+    }
+
+    .meta-table td:first-child {
+      font-weight: 500;
+      color: var(--text-tertiary);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      width: 110px;
+      white-space: nowrap;
+    }
+
+    .meta-table td:last-child {
+      font-weight: 300;
+      color: var(--text-secondary);
+    }
+
+    /* Sections */
+    .cs-section {
+      margin-bottom: 3rem;
+      padding-bottom: 3rem;
+      border-bottom: 0.5px solid var(--border);
+    }
+
+    .cs-section:last-child { border-bottom: none; }
+
+    .cs-section h2 {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 1.25rem;
+      letter-spacing: -0.01em;
+      scroll-margin-top: 40px;
+    }
+
+    .cs-section h3 {
+      font-size: 15px;
+      font-weight: 500;
+      margin: 1.75rem 0 0.6rem;
+      color: var(--text-primary);
+    }
+
+    .cs-section p {
+      font-size: 15px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .cs-section p:last-child { margin-bottom: 0; }
+
+    /* Blockquote */
+    blockquote {
+      border-left: 3px solid var(--border);
+      padding: 0.75rem 0 0.75rem 1.25rem;
+      margin: 1.5rem 0;
+    }
+
+    blockquote p {
+      font-size: 15px;
+      font-style: italic;
+      color: var(--text-secondary);
+    }
+
+    /* Numbered list */
+    .numbered-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 0.75rem;
+    }
+
+    .numbered-list li {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .num-badge {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      background: var(--bg-secondary);
+      border: 0.5px solid var(--border);
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 2px;
+    }
+
+    .num-body {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      padding-top: 2px;
+    }
+
+    .num-body strong {
+      font-weight: 500;
+      color: var(--text-primary);
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    /* Bullet list */
+    .bullet-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 0.5rem;
+    }
+
+    .bullet-list li {
+      display: flex;
+      gap: 10px;
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .bullet-list li::before {
+      content: "→";
+      color: var(--text-tertiary);
+      flex-shrink: 0;
+    }
+
+    /* Design thinking steps */
+    .dt-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      margin-top: 1rem;
+    }
+
+    .dt-step {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .dt-badge {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      background: var(--bg-secondary);
+      border: 0.5px solid var(--border);
+      border-radius: 6px;
+      padding: 3px 10px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .dt-body strong {
+      font-size: 14px;
+      font-weight: 500;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .dt-body p {
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      margin: 0 0 6px;
+      line-height: 1.7;
+    }
+
+    /* Screen images */
+    .screen-img {
+      width: 100%;
+      border-radius: 10px;
+      border: 0.5px solid var(--border);
+      background: var(--bg-secondary);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1.25rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .screen-img img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: contain;
+    }
+
+    .screen-img.placeholder-img {
+      aspect-ratio: 16 / 9;
+      flex-direction: column;
+      gap: 8px;
+      border: 0.5px dashed var(--border);
+      color: var(--text-tertiary);
+      font-size: 12px;
+      font-weight: 300;
+    }
+
+    /* Screen group label */
+    .screen-group-label {
+      font-size: 13px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-tertiary);
+      margin-bottom: 10px;
+      margin-top: 1.5rem;
+    }
+
+    /* Core features grid */
+    .features-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 1rem;
+    }
+
+    .feature-card {
+      background: var(--bg-secondary);
+      border: 0.5px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .feature-card strong {
+      font-size: 13px;
+      font-weight: 500;
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    .feature-card p {
+      font-size: 13px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* Outcomes list */
+    .outcomes-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 0.5rem;
+    }
+
+    .outcomes-list li {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .outcomes-list li::before {
+      content: "→";
+      color: var(--text-tertiary);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    /* FOOTER */
+    .cs-footer {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 24px 3rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      border-top: 0.5px solid var(--border);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      font-size: 12px;
+      color: var(--text-tertiary);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .footer-links a:hover { color: var(--text-primary); }
+
+    .footer-copy { font-size: 12px; color: var(--text-tertiary); }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .page {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+
+      .toc {
+        position: static;
+        border-bottom: 0.5px solid var(--border);
+        padding-bottom: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .toc ul {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .toc ul li a {
+        border-left: none;
+        border: 0.5px solid var(--border);
+        border-radius: 20px;
+        padding: 4px 12px;
+        font-size: 12px;
+      }
+
+      .cs-title { font-size: 22px; }
+      .features-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- TOP NAV -->
+  <nav class="topnav">
+    <a href="../index.html">← Back to home</a>
+  </nav>
+
+  <!-- PAGE LAYOUT -->
+  <div class="page">
+
+    <!-- LEFT TABLE OF CONTENTS -->
+    <aside class="toc">
+      <ul>
+        <li><a href="#objective">Project Objective</a></li>
+        <li><a href="#introduction">Introduction</a></li>
+        <li><a href="#genesis">The Genesis</a></li>
+        <li><a href="#problem">The Problem</a></li>
+        <li><a href="#idea">The Idea</a></li>
+        <li><a href="#process">Design Thinking Process</a></li>
+        <li><a href="#screens">UI Screens</a></li>
+        <li><a href="#model">Club Med-iCare Model</a></li>
+        <li><a href="#conclusion">Conclusion</a></li>
+      </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="content">
+
+      <!-- HEADER -->
+      <header class="cs-header">
+        <h1 class="cs-title">Club Med-iCare: Redefining Senior Living</h1>
+        <p class="cs-subtitle">A social engagement club designed to transform how we care for elderly Nigerians.</p>
+        <div class="cs-date-tags">
+          <span class="cs-tag">UX Design</span>
+          <span class="cs-tag">Website Design</span>
+          <span class="cs-tag">Social Impact</span>
+          <span class="cs-tag">Healthcare</span>
+        </div>
+
+        <table class="meta-table">
+          <tr>
+            <td>Role</td>
+            <td>Product Designer</td>
+          </tr>
+          <tr>
+            <td>Scope</td>
+            <td>UX/UI · Website Design · UX Research</td>
+          </tr>
+          <tr>
+            <td>Sector</td>
+            <td>Healthcare · Social Impact · Nigeria</td>
+          </tr>
+        </table>
+      </header>
+
+      <!-- PROJECT OBJECTIVE -->
+      <section class="cs-section" id="objective">
+        <h2>Project Objective</h2>
+        <p>In Nigeria, elderly individuals face significant challenges of social isolation and limited engagement, particularly as traditional family support systems evolve. Research indicates that social engagement is crucial for maintaining quality of life and well-being among seniors.</p>
+        <p>Club Med-iCare was designed to bridge this gap — combining medical supervision with vibrant community-building activities to give seniors not just care, but a life worth living.</p>
+      </section>
+
+      <!-- INTRODUCTION -->
+      <section class="cs-section" id="introduction">
+        <h2>Introduction</h2>
+        <p>As societies evolve, the need for innovative solutions to address social isolation among seniors has become increasingly important. Traditional nursing homes often focus on basic care, but they can lack the social interaction and community engagement that are crucial for maintaining mental and physical health.</p>
+        <p>Club Med-iCare was established to fill this gap — creating a vibrant social club and active seniors community center that offers a refreshing alternative to conventional elderly care.</p>
+        <div class="screen-img">
+          <img src="../assets/images/club-medicare/introduction.png" alt="Club Med-iCare Introduction"
+            onerror="this.parentElement.classList.add('placeholder-img'); this.style.display='none'; this.parentElement.innerHTML='<span>introduction.png</span>'" />
+        </div>
+      </section>
+
+      <!-- THE GENESIS -->
+      <section class="cs-section" id="genesis">
+        <h2>The Genesis: A Personal Insight</h2>
+        <p>My grandmother, before her illness, was the heart of our family. Her laughter, her stories, her boundless love for her grandchildren — they defined our home. But when her health declined, everything changed.</p>
+        <p>After her treatment, the doctors advised us to limit contact with her to aid her recovery. What followed was heartbreaking. Instead of seeing her regain strength and vitality, I watched as her spirit faded. The once vibrant woman who brought life to our family became withdrawn, lonely, and disconnected. Her health declined rapidly, and it became painfully clear that isolation had taken its toll.</p>
+        <blockquote>
+          <p>This experience made me question how elderly care is approached — and led me to think about solutions that could help people like my grandmother recover physically, but also feel engaged, connected, and alive again.</p>
+        </blockquote>
+        <div class="screen-img">
+          <img src="../assets/images/club-medicare/persona.png" alt="User Persona"
+            onerror="this.parentElement.classList.add('placeholder-img'); this.style.display='none'; this.parentElement.innerHTML='<span>persona.png</span>'" />
+        </div>
+      </section>
+
+      <!-- THE PROBLEM -->
+      <section class="cs-section" id="problem">
+        <h2>The Problem: Traditional Nursing Homes in Nigeria</h2>
+        <p>For many families in Nigeria, when elderly loved ones require specialized care, they are presented with two main options:</p>
+        <ul class="numbered-list">
+          <li>
+            <div class="num-badge">1</div>
+            <div class="num-body">
+              <strong>Hire nurses or maids for home care</strong>
+              While this provides convenience, it often leads to loneliness for the elderly as they lack meaningful social interaction.
+            </div>
+          </li>
+          <li>
+            <div class="num-badge">2</div>
+            <div class="num-body">
+              <strong>Place them in nursing homes</strong>
+              Traditional nursing homes focus on medical treatments but often lack social engagement programs. Research has shown that these facilities can unintentionally become waiting places where seniors live out their remaining days without purpose or joy.
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <!-- THE IDEA -->
+      <section class="cs-section" id="idea">
+        <h2>The Idea: A Different Kind of Elderly Care</h2>
+        <p>Inspired by my grandmother's story, I envisioned a new kind of elderly care facility — a <strong>social engagement club</strong> designed to transform how we care for seniors in Nigeria. This facility would combine medical supervision with vibrant social activities to help seniors feel connected and purposeful.</p>
+      </section>
+
+      <!-- DESIGN THINKING PROCESS -->
+      <section class="cs-section" id="process">
+        <h2>Design Thinking Process</h2>
+        <div class="dt-steps">
+
+          <div class="dt-step">
+            <span class="dt-badge">Empathize</span>
+            <div class="dt-body">
+              <ul class="bullet-list" style="margin-top: 0;">
+                <li><strong>Observation:</strong> Seniors often experience loneliness and isolation due to limited social interaction.</li>
+                <li><strong>Interviews:</strong> Families express concern about placing loved ones in nursing homes due to their sterile environments.</li>
+                <li><strong>Insights:</strong> Seniors thrive when they have opportunities for meaningful engagement with peers and family members.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="dt-step">
+            <span class="dt-badge">Define</span>
+            <div class="dt-body">
+              <p>Seniors in Nigeria lack access to care facilities that prioritize social engagement alongside medical supervision, leading to loneliness and reduced life expectancy.</p>
+            </div>
+          </div>
+
+          <div class="dt-step">
+            <span class="dt-badge">Ideate</span>
+            <div class="dt-body">
+              <p>Brainstormed solutions that combine healthcare with vibrant community-building activities.</p>
+              <div class="screen-img" style="margin-top: 1rem;">
+                <img src="../assets/images/club-medicare/ideate.png" alt="Ideation board"
+                  onerror="this.parentElement.classList.add('placeholder-img'); this.style.display='none'; this.parentElement.innerHTML='<span>ideate.png</span>'" />
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- UI SCREENS -->
+      <section class="cs-section" id="screens">
+        <h2>UI Screens</h2>
+
+        <p class="screen-group-label">Landing Page</p>
+        <div class="screen-img">
+          <img src="../assets/images/club-medicare/landing-page.png" alt="Club Med-iCare Landing Page"
+            onerror="this.parentElement.classList.add('placeholder-img'); this.style.display='none'; this.parentElement.innerHTML='<span>landing-page.png</span>'" />
+        </div>
+      </section>
+
+      <!-- CLUB MED-iCARE MODEL -->
+      <section class="cs-section" id="model">
+        <h2>Club Med-iCare Model</h2>
+
+        <h3>Core Features</h3>
+        <div class="features-grid">
+          <div class="feature-card">
+            <strong>Social Engagement Activities</strong>
+            <p>Group games, art therapy, fitness classes, music events, and storytelling circles.</p>
+          </div>
+          <div class="feature-card">
+            <strong>Medical Supervision</strong>
+            <p>Nurses and doctors monitor health while encouraging active participation in daily life.</p>
+          </div>
+          <div class="feature-card">
+            <strong>Community Building</strong>
+            <p>Seniors form friendships within a warm, supportive, and purposeful environment.</p>
+          </div>
+          <div class="feature-card">
+            <strong>Family Peace of Mind</strong>
+            <p>Families stay informed and connected, knowing their loved ones are thriving.</p>
+          </div>
+        </div>
+
+        <h3>Impact Goals</h3>
+        <ul class="outcomes-list">
+          <li>Improve mental health by reducing loneliness among elderly Nigerians.</li>
+          <li>Increase life expectancy through active social and physical engagement.</li>
+          <li>Foster stronger bonds between seniors and their families.</li>
+          <li>Provide peace of mind for families knowing their loved ones are cared for.</li>
+        </ul>
+      </section>
+
+      <!-- CONCLUSION -->
+      <section class="cs-section" id="conclusion">
+        <h2>Conclusion</h2>
+        <p>By combining medical supervision with vibrant social engagement programs, Club Med-iCare creates a space where seniors can thrive physically, emotionally, and socially.</p>
+        <blockquote>
+          <p>Inspired by personal experience and backed by research and community feedback, Club Med-iCare represents hope for families seeking better options for their loved ones.</p>
+        </blockquote>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="cs-footer">
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/calebinnocent/" target="_blank" rel="noopener">LinkedIn</a>
+      <a href="https://layers.to/beloved" target="_blank" rel="noopener">Designs</a>
+      <a href="https://docs.google.com/document/d/19_4POuirY4o4PuWvOMI_A__f0wBFO7W9kv2Tc1C96do/edit?usp=sharing" target="_blank" rel="noopener">Résumé</a>
+    </div>
+    <span class="footer-copy">© 2026 Caleb Innocent</span>
+  </footer>
+
+  <!-- TOC ACTIVE HIGHLIGHT -->
+  <script>
+    const sections = document.querySelectorAll('.cs-section');
+    const tocLinks = document.querySelectorAll('.toc ul li a');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(link => link.classList.remove('active'));
+          const active = document.querySelector(`.toc a[href="#${entry.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-20% 0px -70% 0px' });
+
+    sections.forEach(s => observer.observe(s));
+  </script>
+
+</body>
+</html>
