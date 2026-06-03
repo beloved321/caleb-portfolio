@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CinikiHub — Onboarding Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --green:   #1B4D2E;
+      --gold:    #FFBF34;
+      --white:   #FFFFFF;
+      --black:   #1B1818;
+      --gray-50: #F8F8F7;
+      --gray-100:#F0F0EE;
+      --gray-200:#E2E2DF;
+      --gray-400:#ACACAA;
+      --gray-600:#6B6B6B;
+      --green-light: rgba(27,77,46,0.06);
+      --shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      font-family: 'Plus Jakarta Sans', 'Avenir Next', 'Avenir', sans-serif;
+      letter-spacing: -0.02em;
+      background: var(--white);
+      color: var(--black);
+      overflow: hidden;
+    }
+
+    /* ── SCREEN SYSTEM ── */
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: none;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+    }
+    .screen.active {
+      display: flex;
+      opacity: 1;
+    }
+
+    /* ── NOISE TEXTURE ── */
+    .noise::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── LOGO MARK ── */
+    .logo {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: -0.03em;
+      position: relative;
+      z-index: 1;
+      user-select: none;
+    }
+    .logo span { color: var(--gold); }
+    .logo.dark { color: var(--black); }
+    .logo.dark span { color: var(--gold); }
+    .logo.green-text { color: var(--green); }
+    .logo.green-text span { color: var(--gold); }
+
+    /* ══════════════════════════════════════
+       SCREEN 1 — SPLASH
+    ══════════════════════════════════════ */
+    #s-splash {
+      background: var(--green);
+      flex-direction: column;
+      cursor: pointer;
+      position: relative;
+    }
+
+    #s-splash .logo-wrap {
+      position: absolute;
+      top: 32px; left: 40px;
+      z-index: 1;
+    }
+
+    #s-splash .logo-big {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 52px;
+      font-weight: 800;
+      color: var(--white);
+      letter-spacing: -0.04em;
+      z-index: 1;
+      text-align: center;
+    }
+    #s-splash .logo-big span { color: var(--gold); }
+
+    #s-splash .hint {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.04em;
+      z-index: 1;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.35; }
+      50% { opacity: 0.7; }
+    }
+
+    /* ══════════════════════════════════════
+       SPLIT LAYOUT — screens 2,3,4
+    ══════════════════════════════════════ */
+    .split { display: flex; width: 100%; height: 100%; }
+
+    .split-left {
+      width: 38%;
+      background: var(--green);
+      padding: 36px 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .split-left-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding-bottom: 40px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .split-headline {
+      font-size: 38px;
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.08;
+      letter-spacing: -0.04em;
+      margin-bottom: 16px;
+    }
+    .split-headline .gold { color: var(--gold); }
+
+    .split-body-text {
+      font-size: 14px;
+      font-weight: 400;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.65;
+      max-width: 240px;
+    }
+
+    .split-footer {
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Progress dots */
+    .prog-dots {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 28px;
+      position: relative;
+      z-index: 1;
+    }
+    .prog-dot {
+      height: 3px;
+      border-radius: 2px;
+      background: rgba(255,255,255,0.2);
+      transition: all 0.3s;
+    }
+    .prog-dot.done { width: 20px; background: rgba(255,255,255,0.5); }
+    .prog-dot.active { width: 28px; background: var(--gold); }
+    .prog-dot.future { width: 14px; }
+
+    .split-right {
+      flex: 1;
+      background: var(--white);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 40px 64px;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    /* ── FORM ELEMENTS ── */
+    .f-title {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--black);
+      letter-spacing: -0.03em;
+      margin-bottom: 6px;
+    }
+
+    .f-sub {
+      font-size: 13px;
+      color: var(--gray-600);
+      line-height: 1.55;
+      margin-bottom: 28px;
+    }
+
+    .f-group { margin-bottom: 18px; }
+
+    .f-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--black);
+      margin-bottom: 7px;
+      letter-spacing: -0.01em;
+    }
+    .f-label .req { color: #E53E3E; }
+
+    .f-input {
+      width: 100%;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 8px;
+      padding: 11px 14px;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--black);
+      outline: none;
+      background: var(--white);
+      transition: border-color 0.15s, box-shadow 0.15s;
+      letter-spacing: -0.01em;
+    }
+    .f-input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(27,77,46,0.08); }
+    .f-input::placeholder { color: var(--gray-400); }
+    .f-input.filled { color: var(--black); }
+
+    .phone-row {
+      display: flex;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: border-color 0.15s;
+    }
+    .phone-row:focus-within { border-color: var(--green); }
+
+    .phone-code {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 11px 12px;
+      border-right: 1.5px solid var(--gray-200);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--black);
+      background: var(--gray-50);
+      white-space: nowrap;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .phone-code svg { width: 10px; opacity: 0.5; }
+
+    .phone-input {
+      flex: 1;
+      border: none;
+      padding: 11px 14px;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--black);
+      outline: none;
+      background: transparent;
+    }
+    .phone-input::placeholder { color: var(--gray-400); }
+
+    .f-select {
+      width: 100%;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 8px;
+      padding: 11px 36px 11px 14px;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--black);
+      outline: none;
+      appearance: none;
+      background: var(--white) url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23ACACAA' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center;
+      cursor: pointer;
+      transition: border-color 0.15s;
+      letter-spacing: -0.01em;
+    }
+    .f-select:focus { border-color: var(--green); }
+
+    /* Trust note */
+    .trust-note {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      font-style: italic;
+      color: var(--gray-600);
+      margin-bottom: 20px;
+    }
+    .trust-icon {
+      width: 18px; height: 18px;
+      background: var(--green);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .trust-icon svg { width: 9px; height: 9px; }
+
+    /* Buttons */
+    .btn {
+      width: 100%;
+      padding: 13px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      transition: all 0.15s;
+      letter-spacing: -0.01em;
+    }
+    .btn-primary { background: var(--green); color: var(--white); }
+    .btn-primary:hover { background: #163d25; }
+    .btn-primary:disabled { background: #C5D5CB; color: #8FAF99; cursor: not-allowed; }
+    .btn-ghost { background: var(--gray-100); color: var(--black); }
+    .btn-ghost:hover { background: var(--gray-200); }
+
+    .btn-row { display: flex; gap: 10px; }
+    .btn-row .btn { flex: 1; }
+
+    .form-footer {
+      text-align: center;
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--gray-600);
+    }
+    .form-footer a { color: var(--black); font-weight: 700; text-decoration: none; }
+    .form-footer a:hover { text-decoration: underline; }
+
+    /* ── USER TYPE OPTIONS ── */
+    .user-type-opt {
+      border: 1.5px solid var(--gray-200);
+      border-radius: 10px;
+      padding: 14px 18px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .user-type-opt:hover { border-color: #bbb; }
+    .user-type-opt.selected {
+      border-color: var(--green);
+      background: var(--green-light);
+    }
+    .uto-radio {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      border: 2px solid var(--gray-200);
+      flex-shrink: 0;
+      margin-top: 1px;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.15s;
+    }
+    .user-type-opt.selected .uto-radio {
+      border-color: var(--green);
+      background: var(--green);
+    }
+    .uto-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--white);
+      display: none;
+    }
+    .user-type-opt.selected .uto-dot { display: block; }
+    .uto-title { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+    .uto-desc { font-size: 12px; color: var(--gray-600); line-height: 1.4; }
+
+    /* ── OTP SCREEN ── */
+    #s-otp {
+      background: var(--white);
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .otp-wrap-inner {
+      width: 100%;
+      max-width: 480px;
+      text-align: center;
+      padding: 0 24px;
+    }
+    .otp-logo-bar {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 48px;
+      background: var(--green);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .otp-title { font-size: 26px; font-weight: 700; letter-spacing: -0.03em; margin-bottom: 8px; }
+    .otp-sub { font-size: 13px; color: var(--gray-600); line-height: 1.55; margin-bottom: 32px; }
+    .otp-sub strong { color: var(--black); }
+    .otp-label { font-size: 12px; font-weight: 600; margin-bottom: 10px; text-align: left; }
+    .otp-boxes {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-start;
+      margin-bottom: 20px;
+    }
+    .otp-box {
+      width: 56px; height: 60px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 8px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 700;
+      font-family: inherit;
+      color: var(--black);
+      outline: none;
+      transition: border-color 0.15s;
+      letter-spacing: 0;
+    }
+    .otp-box:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(27,77,46,0.08); }
+    .otp-timer { font-size: 14px; font-weight: 700; color: var(--black); margin-bottom: 32px; text-align: left; }
+    .otp-resend { font-size: 13px; color: var(--gray-600); margin-top: 14px; }
+    .otp-resend a { color: var(--green); font-weight: 700; text-decoration: none; cursor: pointer; }
+
+    /* ── BUSINESS IDENTITY SCREEN ── */
+    #s-business {
+      flex-direction: column;
+      overflow-y: auto;
+    }
+    .topbar {
+      background: var(--green);
+      height: 48px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      position: sticky; top: 0; z-index: 10;
+    }
+    .topbar-logo { font-size: 18px; font-weight: 700; color: var(--white); letter-spacing: -0.03em; }
+    .topbar-logo span { color: var(--gold); }
+
+    .steps-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 28px 0 36px;
+      gap: 0;
+    }
+    .step-item { display: flex; align-items: center; gap: 10px; }
+    .step-circle {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .step-circle.done { background: var(--green); color: var(--white); }
+    .step-circle.active { background: var(--gray-100); color: var(--black); border: 1.5px solid var(--gray-200); }
+    .step-label { font-size: 13px; color: var(--gray-600); }
+    .step-label.active { color: var(--black); font-weight: 600; }
+    .step-line {
+      width: 80px; height: 2px;
+      margin: 0 10px;
+      background: repeating-linear-gradient(90deg, var(--gray-200) 0, var(--gray-200) 5px, transparent 5px, transparent 9px);
+    }
+
+    .biz-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 24px 60px;
+    }
+    .biz-form { width: 100%; max-width: 520px; }
+    .biz-title {
+      font-size: 26px; font-weight: 700;
+      text-align: center; letter-spacing: -0.03em;
+      margin-bottom: 6px;
+    }
+    .biz-sub {
+      font-size: 13px; color: var(--gray-600);
+      text-align: center; line-height: 1.55;
+      margin-bottom: 32px;
+    }
+
+    /* Custom dropdown */
+    .csd-wrap { position: relative; }
+    .csd-trigger {
+      width: 100%;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 8px;
+      padding: 11px 36px 11px 14px;
+      font-size: 14px; font-family: inherit;
+      color: var(--black);
+      background: var(--white) url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23ACACAA' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right 12px center;
+      cursor: pointer;
+      text-align: left;
+      transition: border-color 0.15s;
+      letter-spacing: -0.01em;
+      appearance: none;
+    }
+    .csd-trigger.placeholder-val { color: var(--gray-400); }
+    .csd-trigger.open { border-color: var(--green); border-radius: 8px 8px 0 0; background-image: url("data:image/svg+xml,%3Csvg width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23ACACAA' stroke-width='2.5'%3E%3Cpath d='M18 15l-6-6-6 6'/%3E%3C/svg%3E"); }
+
+    .csd-dropdown {
+      display: none;
+      position: absolute;
+      top: 100%; left: 0; right: 0;
+      border: 1.5px solid var(--green);
+      border-top: none;
+      border-radius: 0 0 8px 8px;
+      background: var(--white);
+      z-index: 20;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    .csd-dropdown.open { display: block; }
+    .csd-option {
+      padding: 11px 14px;
+      font-size: 14px; cursor: pointer;
+      transition: background 0.1s;
+      letter-spacing: -0.01em;
+    }
+    .csd-option:hover { background: #f0f5f1; }
+    .csd-option.highlighted { background: #e8f0ea; font-weight: 600; }
+
+    /* Commodity pills */
+    .commodity-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+    .commodity-item {
+      display: flex; align-items: center; gap: 7px;
+      font-size: 13px; cursor: pointer;
+      padding: 6px 12px 6px 8px;
+      border: 1.5px solid var(--gray-200);
+      border-radius: 999px;
+      transition: all 0.15s;
+      user-select: none;
+    }
+    .commodity-item:hover { border-color: #aaa; }
+    .commodity-item.selected { border-color: var(--green); background: var(--green-light); font-weight: 600; }
+    .com-radio {
+      width: 14px; height: 14px;
+      border-radius: 50%;
+      border: 2px solid var(--gray-200);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: all 0.15s;
+    }
+    .commodity-item.selected .com-radio { border-color: var(--green); background: var(--green); }
+    .com-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--white); display: none; }
+    .commodity-item.selected .com-dot { display: block; }
+
+    /* ── COUNTRY MODAL ── */
+    .modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.3);
+      z-index: 50;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(2px);
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-card {
+      background: var(--white);
+      border-radius: 14px;
+      padding: 36px 44px;
+      width: 100%; max-width: 520px;
+      box-shadow: 0 24px 64px rgba(0,0,0,0.14);
+      position: relative;
+    }
+    .modal-title {
+      font-size: 22px; font-weight: 700;
+      letter-spacing: -0.03em; margin-bottom: 4px;
+    }
+    .modal-sub { font-size: 13px; color: var(--gray-600); line-height: 1.5; margin-bottom: 24px; }
+
+    .yn-group { display: flex; gap: 10px; margin-top: 8px; }
+    .yn-opt {
+      flex: 1; border: 1.5px solid var(--gray-200);
+      border-radius: 8px; padding: 10px 16px;
+      display: flex; align-items: center; gap: 8px;
+      cursor: pointer; font-size: 14px; font-weight: 600;
+      transition: all 0.15s;
+    }
+    .yn-opt:hover { border-color: #bbb; }
+    .yn-opt.selected { border-color: var(--green); background: var(--green-light); }
+    .yn-radio {
+      width: 16px; height: 16px; border-radius: 50%;
+      border: 2px solid var(--gray-200);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: all 0.15s;
+    }
+    .yn-opt.selected .yn-radio { border-color: var(--green); background: var(--green); }
+    .yn-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--white); display: none; }
+    .yn-opt.selected .yn-dot { display: block; }
+
+    .gepa-reveal { display: none; margin-top: 16px; }
+    .gepa-reveal.show { display: block; }
+
+    /* ── COMPLETION SCREEN ── */
+    #s-complete {
+      background: var(--green);
+      flex-direction: column;
+      position: relative;
+    }
+    #s-complete .comp-nav {
+      padding: 28px 40px;
+      position: relative; z-index: 1;
+    }
+    #s-complete .comp-body {
+      flex: 1;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      padding: 0 40px 40px;
+      position: relative; z-index: 1;
+    }
+    .comp-title {
+      font-size: 34px; font-weight: 800;
+      color: var(--white); letter-spacing: -0.04em;
+      margin-bottom: 10px;
+    }
+    .comp-sub {
+      font-size: 14px; color: rgba(255,255,255,0.6);
+      line-height: 1.6; margin-bottom: 36px;
+    }
+    .comp-step-label {
+      font-size: 11px; font-weight: 700;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 12px; text-align: left;
+      width: 100%; max-width: 420px;
+    }
+    .comp-actions { width: 100%; max-width: 420px; }
+    .comp-action {
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 10px;
+      padding: 16px 18px;
+      display: flex; align-items: center;
+      justify-content: space-between;
+      cursor: pointer; margin-bottom: 8px;
+      transition: background 0.15s;
+      text-decoration: none;
+    }
+    .comp-action:hover { background: rgba(255,255,255,0.08); }
+    .comp-action-left { display: flex; align-items: flex-start; gap: 14px; }
+    .comp-icon {
+      width: 34px; height: 34px;
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .comp-icon svg { width: 16px; height: 16px; }
+    .comp-action-title { font-size: 14px; font-weight: 700; color: var(--white); margin-bottom: 3px; }
+    .comp-action-desc { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.4; }
+    .comp-chevron { color: rgba(255,255,255,0.35); font-size: 16px; }
+
+    /* ── PROTOTYPE NAVBAR ── */
+    #proto-bar {
+      position: fixed;
+      bottom: 18px; left: 50%;
+      transform: translateX(-50%);
+      background: rgba(10,10,10,0.82);
+      backdrop-filter: blur(16px);
+      border-radius: 999px;
+      padding: 9px 22px;
+      display: flex; align-items: center; gap: 14px;
+      z-index: 9999;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    #proto-bar .pb-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+    #proto-bar .pb-label { font-size: 11px; color: rgba(255,255,255,0.45); letter-spacing: 0.04em; }
+    #proto-bar a {
+      font-size: 11px; color: rgba(255,255,255,0.75);
+      text-decoration: none; letter-spacing: 0.02em;
+    }
+    #proto-bar a:hover { color: var(--white); }
+    #proto-bar .pb-div { width: 1px; height: 12px; background: rgba(255,255,255,0.15); }
+  </style>
+</head>
+<body>
+
+<!-- ══════ SCREEN 1: SPLASH ══════ -->
+<div class="screen noise active" id="s-splash" onclick="goTo('s-welcome')">
+  <div class="logo-wrap"><div class="logo">Ciniki<span>Hub</span></div></div>
+  <div class="logo-big">Ciniki<span>Hub</span></div>
+  <p class="hint">Click anywhere to begin</p>
+</div>
+
+<!-- ══════ SCREEN 2: WELCOME / USER TYPE ══════ -->
+<div class="screen" id="s-welcome">
+  <div class="split">
+    <div class="split-left noise">
+      <div class="logo" style="position:relative;z-index:1;">Ciniki<span>Hub</span></div>
+      <div class="split-left-body">
+        <div class="prog-dots">
+          <div class="prog-dot active"></div>
+          <div class="prog-dot future"></div>
+          <div class="prog-dot future"></div>
+        </div>
+        <div class="split-headline">Save <span class="gold">25%</span> on Every Shipment</div>
+        <div class="split-body-text">Under the AfCFTA, your agricultural exports to AfCFTA States, can qualify for 0% Import Duties. Stop losing profits to unnecessary tariffs.</div>
+      </div>
+      <div class="split-footer">Africa's Trade Blueprint</div>
+    </div>
+
+    <div class="split-right">
+      <div class="f-title">Welcome to CinikiHub</div>
+      <div class="f-sub">To build your custom export roadmap, tell us who you are.</div>
+
+      <div class="user-type-opt" id="uto-trader" onclick="selectUserType('trader')">
+        <div class="uto-radio"><div class="uto-dot"></div></div>
+        <div>
+          <div class="uto-title">I am Cooperative or Farmer or Trader</div>
+          <div class="uto-desc">I want to export products across Africa.</div>
+        </div>
+      </div>
+
+      <div class="user-type-opt" id="uto-authority" onclick="selectUserType('authority')">
+        <div class="uto-radio"><div class="uto-dot"></div></div>
+        <div>
+          <div class="uto-title">I am an Issuing Authority</div>
+          <div class="uto-desc">I need to verify documents and approve certifications.</div>
+        </div>
+      </div>
+
+      <div style="margin-top: 28px;">
+        <button class="btn btn-primary" id="btn-welcome" disabled onclick="goTo('s-register')">Continue to setup</button>
+      </div>
+      <div class="form-footer">Already have an account? <a href="#">Log in</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ SCREEN 3: REGISTRATION ══════ -->
+<div class="screen" id="s-register">
+  <div class="split">
+    <div class="split-left noise">
+      <div class="logo" style="position:relative;z-index:1;">Ciniki<span>Hub</span></div>
+      <div class="split-left-body">
+        <div class="prog-dots">
+          <div class="prog-dot done"></div>
+          <div class="prog-dot active"></div>
+          <div class="prog-dot future"></div>
+        </div>
+        <div class="split-headline">Save <span class="gold">25%</span> on Every Shipment</div>
+        <div class="split-body-text">Under the AfCFTA, your agricultural exports to AfCFTA States, can qualify for 0% Import Duties. Stop losing profits to unnecessary tariffs.</div>
+      </div>
+      <div class="split-footer">Africa's Trade Blueprint</div>
+    </div>
+
+    <div class="split-right">
+      <div class="f-title">Let's get you export-ready</div>
+      <div class="f-sub">Create your secure profile to track your compliance progress and save your shipping documents.</div>
+
+      <div class="f-group">
+        <label class="f-label">Full name / Name of Organization <span class="req">**</span></label>
+        <input class="f-input" type="text" id="reg-name" placeholder="placeholder" oninput="checkRegForm()" />
+      </div>
+
+      <div class="f-group">
+        <label class="f-label">Phone number <span class="req">**</span></label>
+        <div class="phone-row">
+          <div class="phone-code">+233 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg></div>
+          <input class="phone-input" type="tel" id="reg-phone" placeholder="XX XXX XXXX" oninput="checkRegForm()" />
+        </div>
+      </div>
+
+      <div class="f-group">
+        <label class="f-label">Email address</label>
+        <input class="f-input" type="email" id="reg-email" placeholder="placeholder@example.com" oninput="checkRegForm()" />
+      </div>
+
+      <div class="f-group">
+        <label class="f-label">Country of residence</label>
+        <select class="f-select" id="reg-country" onchange="checkRegForm()">
+          <option value="">Select from any of the AfCFTA member states</option>
+          <option value="gh">Ghana</option>
+          <option value="ng">Nigeria</option>
+          <option value="ke">Kenya</option>
+          <option value="ci">Côte d'Ivoire</option>
+          <option value="sn">Senegal</option>
+        </select>
+      </div>
+
+      <div class="trust-note">
+        <div class="trust-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M9 12l2 2 4-4"/><path d="M12 2L3 7v5c0 5.25 3.75 10.15 9 11.35C17.25 22.15 21 17.25 21 12V7z"/></svg>
+        </div>
+        Your data is encrypted and used only for AfCFTA compliance.
+      </div>
+
+      <button class="btn btn-primary" id="btn-register" disabled onclick="goTo('s-otp')">Create my account</button>
+      <div class="form-footer">Already have an account? <a href="#">Log in</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ SCREEN 4: OTP VERIFICATION ══════ -->
+<div class="screen" id="s-otp">
+  <div class="otp-logo-bar">
+    <div class="topbar-logo">Ciniki<span>Hub</span></div>
+  </div>
+  <div class="otp-wrap-inner" style="margin-top:60px;">
+    <div class="otp-title">Check your inbox</div>
+    <div class="otp-sub">We've sent a 6-digit verification code to<br><strong>+233 24 871 4420</strong> Enter it below to secure your account.</div>
+    <div class="otp-label">Enter 6-digit code</div>
+    <div class="otp-boxes">
+      <input class="otp-box" maxlength="1" type="text" id="otp1" oninput="otpNext(this, 'otp2')" onkeydown="otpBack(event, null)" />
+      <input class="otp-box" maxlength="1" type="text" id="otp2" oninput="otpNext(this, 'otp3')" onkeydown="otpBack(event, 'otp1')" />
+      <input class="otp-box" maxlength="1" type="text" id="otp3" oninput="otpNext(this, 'otp4')" onkeydown="otpBack(event, 'otp2')" />
+      <input class="otp-box" maxlength="1" type="text" id="otp4" oninput="otpNext(this, 'otp5')" onkeydown="otpBack(event, 'otp3')" />
+      <input class="otp-box" maxlength="1" type="text" id="otp5" oninput="otpNext(this, 'otp6')" onkeydown="otpBack(event, 'otp4')" />
+      <input class="otp-box" maxlength="1" type="text" id="otp6" oninput="otpDone()" onkeydown="otpBack(event, 'otp5')" />
+    </div>
+    <div class="otp-timer" id="otp-timer">00:56</div>
+    <button class="btn btn-primary" id="btn-otp" disabled onclick="goTo('s-business')">Verify &amp; Start</button>
+    <div class="otp-resend">Didn't get a code? <a onclick="return false;">Resend code</a></div>
+  </div>
+</div>
+
+<!-- ══════ SCREEN 5: BUSINESS IDENTITY ══════ -->
+<div class="screen" id="s-business">
+  <div class="topbar"><div class="topbar-logo">Ciniki<span>Hub</span></div></div>
+  <div class="biz-body">
+    <div class="steps-bar">
+      <div class="step-item">
+        <div class="step-circle done">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><path d="M5 12l5 5L20 7"/></svg>
+        </div>
+        <span class="step-label">Identity verification</span>
+      </div>
+      <div class="step-line"></div>
+      <div class="step-item">
+        <div class="step-circle active">2</div>
+        <span class="step-label active">Business / Trade details</span>
+      </div>
+    </div>
+
+    <div class="biz-form">
+      <div class="biz-title">Build your export identity</div>
+      <div class="biz-sub">Complete your profile to unlock auto-filled shipping forms<br>and faster authority approvals.</div>
+
+      <div class="f-group">
+        <label class="f-label">Business name</label>
+        <input class="f-input filled" type="text" value="Asante Family Farm" />
+      </div>
+
+      <div class="f-group">
+        <label class="f-label">Business registration number</label>
+        <input class="f-input filled" type="text" value="GH-BRN-2022-08841" />
+      </div>
+
+      <div class="f-group">
+        <label class="f-label">Country of export (where goods originate)</label>
+        <div class="csd-wrap">
+          <button class="csd-trigger placeholder-val" id="csd-btn" onclick="toggleDropdown()" type="button">Select country</button>
+          <div class="csd-dropdown" id="csd-dropdown">
+            <div class="csd-option highlighted" onclick="selectCountry('Ghana')">Ghana</div>
+            <div class="csd-option" onclick="selectCountry('Nigeria')">Nigeria</div>
+            <div class="csd-option" onclick="selectCountry('Kenya')">Kenya</div>
+            <div class="csd-option" onclick="selectCountry("Côte d'Ivoire")">Côte d'Ivoire</div>
+            <div class="csd-option" onclick="selectCountry('Senegal')">Senegal</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="f-group">
+        <label class="f-label">Primary product / commodity</label>
+        <div class="commodity-grid">
+          <div class="commodity-item selected" onclick="toggleCom(this)"><div class="com-radio"><div class="com-dot"></div></div>Groundnut</div>
+          <div class="commodity-item" onclick="toggleCom(this)"><div class="com-radio"><div class="com-dot"></div></div>Maize</div>
+          <div class="commodity-item" onclick="toggleCom(this)"><div class="com-radio"><div class="com-dot"></div></div>Cassava</div>
+          <div class="commodity-item" onclick="toggleCom(this)"><div class="com-radio"><div class="com-dot"></div></div>Palm oil</div>
+          <div class="commodity-item" onclick="toggleCom(this)"><div class="com-radio"><div class="com-dot"></div></div>Soybeans</div>
+          <div class="commodity-item" onclick="toggleCom(this)"><div class="com-radio"><div class="com-dot"></div></div>Ginger</div>
+          <div class="commodity-item" onclick="toggleCom(this)"><div class="com-radio"><div class="com-dot"></div></div>Cashew Nuts</div>
+          <div class="commodity-item" onclick="toggleCom(this)"><div class="com-radio"><div class="com-dot"></div></div>Cotton</div>
+        </div>
+      </div>
+
+      <div class="btn-row" style="margin-top:28px;">
+        <button class="btn btn-ghost" onclick="goTo('s-register')">I'll do this later</button>
+        <button class="btn btn-primary" onclick="openModal()">Save &amp; Continue</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ COUNTRY MODAL ══════ -->
+<div class="modal-overlay" id="country-modal">
+  <div class="modal-card">
+    <div class="modal-title">Country of export: Ghana</div>
+    <div class="modal-sub">Complete your profile to unlock auto-filled shipping forms and faster authority approvals.</div>
+
+    <div class="f-group">
+      <label class="f-label">Are you a registered exporter with GEPA or equivalent body?</label>
+      <div class="yn-group">
+        <div class="yn-opt" id="yn-yes" onclick="selectYN('yes')">
+          <div class="yn-radio"><div class="yn-dot"></div></div> Yes
+        </div>
+        <div class="yn-opt" id="yn-no" onclick="selectYN('no')">
+          <div class="yn-radio"><div class="yn-dot"></div></div> No
+        </div>
+      </div>
+    </div>
+
+    <div class="gepa-reveal" id="gepa-reveal">
+      <div class="f-group">
+        <label class="f-label">Enter your GEPA Registration Number.</label>
+        <input class="f-input filled" type="text" value="GIPC/APP/2026/001234" />
+      </div>
+    </div>
+
+    <div class="btn-row" style="margin-top:24px;">
+      <button class="btn btn-ghost" onclick="closeModal()">Go back</button>
+      <button class="btn btn-primary" id="btn-modal" disabled onclick="goTo('s-complete'); closeModal();">Continue</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ SCREEN 6: YOU'RE READY ══════ -->
+<div class="screen noise" id="s-complete">
+  <div class="comp-nav">
+    <div class="logo">Ciniki<span>Hub</span></div>
+  </div>
+  <div class="comp-body">
+    <div class="comp-title">You're Ready to Trade!</div>
+    <div class="comp-sub">Your profile is verified and your cinikihub briefcase is set up.<br>Let's get your first shipment moving.</div>
+    <div class="comp-step-label">Choose your first step:</div>
+    <div class="comp-actions">
+      <a class="comp-action" href="#">
+        <div class="comp-action-left">
+          <div class="comp-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12l2 2 4-4"/></svg>
+          </div>
+          <div>
+            <div class="comp-action-title">Check product eligibility</div>
+            <div class="comp-action-desc">See if your product batch qualifies for 0% AfCFTA tariffs and get your compliance checklist.</div>
+          </div>
+        </div>
+        <div class="comp-chevron">›</div>
+      </a>
+
+      <a class="comp-action" href="#">
+        <div class="comp-action-left">
+          <div class="comp-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.5"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8l5 3-5 3V8z"/></svg>
+          </div>
+          <div>
+            <div class="comp-action-title">Explore export routes</div>
+            <div class="comp-action-desc">Compare rates from verified carriers like ShipAfrica and see transit times to your destination.</div>
+          </div>
+        </div>
+        <div class="comp-chevron">›</div>
+      </a>
+
+      <a class="comp-action" href="#">
+        <div class="comp-action-left">
+          <div class="comp-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.7)" stroke-width="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg>
+          </div>
+          <div>
+            <div class="comp-action-title">Build my export checklist</div>
+            <div class="comp-action-desc">Get a product-specific list of every permit and agency required for export.</div>
+          </div>
+        </div>
+        <div class="comp-chevron">›</div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ PROTOTYPE BAR ══════ -->
+<div id="proto-bar">
+  <div class="pb-dot"></div>
+  <span class="pb-label">CinikiHub Prototype</span>
+  <div class="pb-div"></div>
+  <a href="../cinikihub/">View Case Study</a>
+  <div class="pb-div"></div>
+  <a href="../index.html">← Portfolio</a>
+</div>
+
+<script>
+  // ── SCREEN NAVIGATION ──
+  function goTo(id) {
+    document.querySelectorAll('.screen').forEach(s => {
+      s.classList.remove('active');
+      s.style.display = 'none';
+    });
+    const target = document.getElementById(id);
+    target.style.display = 'flex';
+    // trigger reflow for transition
+    target.offsetHeight;
+    target.classList.add('active');
+
+    // Start OTP timer when reaching OTP screen
+    if (id === 's-otp') startTimer();
+  }
+
+  // ── USER TYPE SELECTION ──
+  function selectUserType(type) {
+    document.getElementById('uto-trader').classList.remove('selected');
+    document.getElementById('uto-authority').classList.remove('selected');
+    document.getElementById('uto-' + type).classList.add('selected');
+    document.getElementById('btn-welcome').disabled = false;
+  }
+
+  // ── REGISTRATION FORM ──
+  function checkRegForm() {
+    const name = document.getElementById('reg-name').value.trim();
+    const phone = document.getElementById('reg-phone').value.trim();
+    document.getElementById('btn-register').disabled = !(name && phone);
+  }
+
+  // ── OTP ──
+  function otpNext(el, nextId) {
+    if (el.value.length === 1 && nextId) {
+      document.getElementById(nextId).focus();
+    }
+    checkOtp();
+  }
+
+  function otpBack(e, prevId) {
+    if (e.key === 'Backspace' && e.target.value === '' && prevId) {
+      document.getElementById(prevId).focus();
+    }
+  }
+
+  function otpDone() { checkOtp(); }
+
+  function checkOtp() {
+    const filled = ['otp1','otp2','otp3','otp4','otp5','otp6']
+      .every(id => document.getElementById(id).value.length === 1);
+    document.getElementById('btn-otp').disabled = !filled;
+  }
+
+  let timerInterval;
+  function startTimer() {
+    let seconds = 56;
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+      seconds--;
+      const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+      const s = String(seconds % 60).padStart(2, '0');
+      const el = document.getElementById('otp-timer');
+      if (el) el.textContent = `${m}:${s}`;
+      if (seconds <= 0) clearInterval(timerInterval);
+    }, 1000);
+  }
+
+  // ── DROPDOWN ──
+  function toggleDropdown() {
+    const btn = document.getElementById('csd-btn');
+    const dd = document.getElementById('csd-dropdown');
+    btn.classList.toggle('open');
+    dd.classList.toggle('open');
+  }
+
+  function selectCountry(name) {
+    const btn = document.getElementById('csd-btn');
+    btn.textContent = name + ' - GEPA registered';
+    btn.classList.remove('placeholder-val', 'open');
+    document.getElementById('csd-dropdown').classList.remove('open');
+  }
+
+  document.addEventListener('click', function(e) {
+    const wrap = document.querySelector('.csd-wrap');
+    if (wrap && !wrap.contains(e.target)) {
+      document.getElementById('csd-btn').classList.remove('open');
+      document.getElementById('csd-dropdown').classList.remove('open');
+    }
+  });
+
+  // ── COMMODITY TOGGLE ──
+  function toggleCom(el) {
+    document.querySelectorAll('.commodity-item').forEach(c => c.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  // ── MODAL ──
+  function openModal() {
+    document.getElementById('country-modal').classList.add('open');
+  }
+
+  function closeModal() {
+    document.getElementById('country-modal').classList.remove('open');
+  }
+
+  function selectYN(val) {
+    document.getElementById('yn-yes').classList.remove('selected');
+    document.getElementById('yn-no').classList.remove('selected');
+    document.getElementById('yn-' + val).classList.add('selected');
+    const gepa = document.getElementById('gepa-reveal');
+    const btn = document.getElementById('btn-modal');
+    if (val === 'yes') {
+      gepa.classList.add('show');
+    } else {
+      gepa.classList.remove('show');
+    }
+    btn.disabled = false;
+  }
+
+  // Close modal on overlay click
+  document.getElementById('country-modal').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  // Keyboard navigation
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeModal();
+  });
+</script>
+</body>
+</html>

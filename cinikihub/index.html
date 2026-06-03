@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="/favicon.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cinikihub — Caleb Innocent</title>
   <meta name="description" content="An AfCFTA Export Compliance Platform. Case study by Caleb Innocent." />
@@ -533,14 +532,32 @@
       <!-- HEADER -->
       <header class="cs-header">
         <h1 class="cs-title">Cinikihub: An AfCFTA Export Compliance Platform</h1>
+        <a href="../cinikihub-app/" target="_blank" style="
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          margin-bottom: 20px;
+          font-size: 13px;
+          font-weight: 500;
+          color: #1B4D2E;
+          text-decoration: none;
+          border: 1.5px solid #1B4D2E;
+          border-radius: 999px;
+          padding: 7px 18px;
+          transition: background 0.15s, color 0.15s;
+          font-family: 'Geist', sans-serif;
+        " onmouseover="this.style.background='#1B4D2E';this.style.color='#fff'"
+           onmouseout="this.style.background='transparent';this.style.color='#1B4D2E'">
+          View Prototype ↗
+        </a>
         <div class="cs-date-tags">
           <span class="cs-date">May 12, 2026</span>
           <span class="cs-tag">UX Design</span>
           <span class="cs-tag">Product Design</span>
           <span class="cs-tag">AfCFTA</span>
         </div>
-
         <p class="cs-subtitle">Making Africa's largest free trade agreement usable for the people it was built for.</p>
+
         <table class="meta-table">
           <tr>
             <td>Role</td>
@@ -777,7 +794,6 @@
     sections.forEach(s => observer.observe(s));
   </script>
 
-
-<script src="../assets/lightbox.js"></script>
+  <script src="../assets/lightbox.js"></script>
 </body>
 </html>
