@@ -47,34 +47,40 @@
        SPLASH SCREEN
     ══════════════════════════ */
     #s-splash {
-      background: #1B4D2E;
+      background: #0D2518;
       cursor: pointer;
-      align-items: flex-start;
-      justify-content: flex-start;
+      align-items: center;
+      justify-content: center;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
     }
     .splash-logo { display: none; }
 
     .splash-center {
       position: absolute;
-      top: 50%; left: 50%;
+      top: 50%;
+      left: 50%;
       transform: translate(-50%, -50%);
-      font-size: clamp(40px, 10vw, 80px);
+      font-size: clamp(36px, 8vw, 80px);
       font-weight: 800;
-      color: #fff; letter-spacing: -0.04em;
-      z-index: 1; text-align: center;
+      color: #fff;
+      letter-spacing: -0.04em;
+      text-align: center;
       line-height: 1;
-      width: 100%;
-      padding: 0 20px;
+      z-index: 1;
+      white-space: nowrap;
     }
     .splash-center span { color: #FFBF34; }
     .splash-hint {
       position: absolute;
-      bottom: 32px; left: 50%;
-      transform: translateX(-50%);
+      bottom: 32px;
+      left: 0; right: 0;
+      text-align: center;
       font-size: 12px; color: rgba(255,255,255,0.35);
       letter-spacing: 0.06em; z-index: 1;
       animation: blink 2s ease-in-out infinite;
-      white-space: nowrap;
     }
     @keyframes blink { 0%,100%{opacity:0.35;} 50%{opacity:0.8;} }
 
