@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://caleb-innocent.vercel.app/sitemap.xml
